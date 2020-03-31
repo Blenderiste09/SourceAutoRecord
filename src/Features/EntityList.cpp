@@ -59,6 +59,65 @@ CEntInfo* EntityList::GetEntityInfoByClassName(const char* name)
 
     return nullptr;
 }
+std::vector<int> EntityList::GetEntitiesIndexByClassName(const char* name)
+{
+    std::vector<int> v;
+    for (auto index = 0; index < Offsets::NUM_ENT_ENTRIES; ++index) {
+        auto info = this->GetEntityInfoByIndex(index);
+        if (info->m_pEntity == nullptr) {
+            continue;
+        }
+
+        auto match = server->GetEntityClassName(info->m_pEntity);
+        if (!match || std::strcmp(match, name) != 0) {
+            continue;
+        }
+
+        v.push_back(index);
+    }
+
+    return v;
+}
+std::vector<CEntInfo*> EntityList::GetEntitiesInfoByClassName(const char* name)
+{
+    std::vector<CEntInfo*> v;
+    for (auto index = 0; index < Offsets::NUM_ENT_ENTRIES; ++index) {
+        auto info = this->GetEntityInfoByIndex(index);
+        if (info->m_pEntity == nullptr) {
+            continue;
+        }
+
+        auto match = server->GetEntityClassName(info->m_pEntity);
+        if (!match || std::strcmp(match, name) != 0) {
+            continue;
+        }
+
+        v.push_back(info);
+    }
+
+    return v;
+}
+IHandleEntity* EntityList::LookupEntity(const CBaseHandle& handle)
+{
+    if (handle.m_Index == Offsets::INVALID_EHANDLE_INDEX)
+        return NULL;
+
+    auto pInfo = this->GetEntityInfoByIndex(handle.GetEntryIndex());
+
+    if (pInfo->m_SerialNumber == handle.GetSerialNumber())
+        return (IHandleEntity*)pInfo->m_pEntity;
+    else
+        return NULL;
+}
+
+int EntityList::GetEntityIndex(const CBaseHandle& handle)
+{
+    if (handle.m_Index == Offsets::INVALID_EHANDLE_INDEX)
+        return NULL;
+
+    return handle.GetEntryIndex();
+}
+
 
 // Commands
 

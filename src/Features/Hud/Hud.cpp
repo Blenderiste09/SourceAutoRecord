@@ -60,8 +60,8 @@ void HudContext::DrawElement(const char* fmt, ...)
     va_end(argptr);
 
     surface->DrawTxt(font,
-        this->xPadding,
-        this->yPadding + this->elements * (this->fontSize + this->spacing),
+        this->xPadding * ((int)this->elements / 82 * 200),
+        this->yPadding + this->elements % 82 * (this->fontSize + this->spacing),
         this->textColor,
         data);
 

@@ -11,6 +11,10 @@
 class ClassDumper : public Feature {
 public:
     int sendPropSize;
+    std::vector<std::string> filters;
+    CEntInfo* entity;
+    std::string network_classname;
+    std::vector<std::string> props;
 
 private:
     std::string serverClassesFile;
@@ -33,3 +37,4 @@ extern Command sar_list_server_classes;
 extern Command sar_list_client_classes;
 extern Command sar_find_server_class;
 extern Command sar_find_client_class;
+extern Command sar_show_entity;
